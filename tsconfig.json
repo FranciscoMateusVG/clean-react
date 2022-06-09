@@ -3,12 +3,11 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "esnext",
     "target": "es5",
-
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "noEmit": true,
