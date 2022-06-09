@@ -3,26 +3,34 @@ import { mockAuthentication } from '@/domain/mocks/mock-authentication'
 import { HttpPostClientSpy } from '@/data/mocks/mock-http-client'
 import { RemoteAuthentication } from './remote-authentication'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
+import { HttpResponse } from '@/data/protocols/http/http-post-client'
 
 describe('RemoteAuthentication', () => {
-  let remoteAuthenticationTest: RemoteAuthentication,
-    httpPostClientSpy: HttpPostClientSpy,
-    url: string,
-    params: AuthenticationParams
+  // Creates remoteAuthentication with a spy
+  const url = faker.internet.url()
+  const httpPostClientSpy = new HttpPostClientSpy()
+  const remoteAuthenticationTest = new RemoteAuthentication(
+    url,
+    httpPostClientSpy
+  )
+  let params: AuthenticationParams
+  let response: HttpResponse
 
-  beforeEach(async () => {
-    url = faker.internet.url()
-    httpPostClientSpy = new HttpPostClientSpy()
-    remoteAuthenticationTest = new RemoteAuthentication(url, httpPostClientSpy)
+  // Async needed to wait for response of remoteAuthenticationTest
+  beforeAll(async () => {
     params = mockAuthentication()
-    await remoteAuthenticationTest.auth(params)
+    response = await remoteAuthenticationTest.auth(params)
   })
 
-  test('Should injetct correct URL in HttpPostClient', () => {
+  test('Should inject correct URL in HttpPostClient', () => {
     expect(httpPostClientSpy.url).toBe(url)
   })
 
-  test('Should injetct correct BODY in HttpPostClient', () => {
+  test('Should inject correct BODY in HttpPostClient', () => {
     expect(httpPostClientSpy.body).toEqual(params)
   })
+
+  // test('Should throw InvalidCredentialsError if  HttpPostClient returns 401', () => {
+  //   expect(response).rejects.toThrow(new InvalidCredentialsError())
+  // })
 })
