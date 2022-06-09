@@ -7,9 +7,8 @@
     "prepare": "husky install",
     "lint": "lint-staged",
     "test": "jest --passWithNoTests",
-    "test:watch": "npm test --watch",
-    "test:staged": "npm test --findRelatedTests",
-    "test:ci": "npm test --coverage"
+    "test:watch": "jest --passWithNoTests --watch",
+    "test:ci": "jest --passWithNoTests --coverage"
   },
   "keywords": [],
   "author": "",
