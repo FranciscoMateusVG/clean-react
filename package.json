@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "git": "^0.1.5"
+    "git-commit-msg-linter": "^4.1.3"
   }
 }
