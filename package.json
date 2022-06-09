@@ -8,6 +8,7 @@
     "lint": "lint-staged",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --passWithNoTests --watch",
+    "test:staged": "jest --passWithNoTests --onlyChanged",
     "test:ci": "jest --passWithNoTests --coverage"
   },
   "keywords": [],
