@@ -1,4 +1,4 @@
-import { AxiosHttpClient } from './axios-http-client'
+import { AxiosAdapter } from './axios-adapter'
 import axios from 'axios'
 import { faker } from '@faker-js/faker'
 import { HttpPostParams } from '@/data/protocols/http'
@@ -18,7 +18,7 @@ const mockPostRequest = (): HttpPostParams<any> => ({
 
 describe('AxiosHttpClient', () => {
   test('Should call axios with the correct PARAMS', async () => {
-    const sut = new AxiosHttpClient()
+    const sut = new AxiosAdapter()
     const postRequest = mockPostRequest()
     await sut.post(postRequest)
     expect(mockedAxios.post).toHaveBeenCalledWith(
@@ -27,7 +27,7 @@ describe('AxiosHttpClient', () => {
     )
   })
   test('Should return the correct status code and body', async () => {
-    const sut = new AxiosHttpClient()
+    const sut = new AxiosAdapter()
     const postRequest = mockPostRequest()
     const httpResponse = await sut.post(postRequest)
     expect(httpResponse).toEqual({
