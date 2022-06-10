@@ -1,7 +1,4 @@
-import { faker } from '@faker-js/faker'
 import { mockAuthentication } from '@/domain/mocks/mock-authentication'
-import { HttpPostClientSpy } from '@/data/mocks/mock-http-client'
-import { RemoteAuthentication } from './remote-authentication'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
 import {
   HttpResponse,
@@ -10,21 +7,14 @@ import {
 import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
 import { UnexpectedError } from '../../../domain/erros/unexpected-error'
 import { AccountModel } from '@/domain/models/account-model'
+import { mockRemoteAuthentication } from '@/data/mocks/remote-authentication'
+
+const { url, httpPostClientSpy, remoteAuthenticationTest } =
+  mockRemoteAuthentication()
 
 describe('RemoteAuthentication injections', () => {
-  // Creates remoteAuthentication with a spy
-  const url = faker.internet.url()
-  const httpPostClientSpy = new HttpPostClientSpy<
-    AuthenticationParams,
-    AccountModel
-  >()
-  const remoteAuthenticationTest = new RemoteAuthentication(
-    url,
-    httpPostClientSpy
-  )
-  let params: AuthenticationParams
   let response: HttpResponse<AccountModel>
-
+  let params: AuthenticationParams
   beforeAll(async () => {
     params = mockAuthentication()
     response = await remoteAuthenticationTest.auth(params)
@@ -40,36 +30,25 @@ describe('RemoteAuthentication injections', () => {
 })
 
 describe('RemoteAuthentication errors', () => {
-  // Creates remoteAuthentication with a spy
-  const url = faker.internet.url()
-  const httpPostClientSpy = new HttpPostClientSpy<
-    AuthenticationParams,
-    AccountModel
-  >()
-  const remoteAuthenticationTest = new RemoteAuthentication(
-    url,
-    httpPostClientSpy
-  )
+  let action: () => Promise<HttpResponse<AccountModel>>
   let params: AuthenticationParams
+  beforeEach(() => {
+    params = mockAuthentication()
+    action = async (): Promise<HttpResponse<AccountModel>> => {
+      return await remoteAuthenticationTest.auth(params)
+    }
+  })
 
   test('Should throw InvalidCredentialsError if  HttpPostClient returns 401', async () => {
-    params = mockAuthentication()
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.unauthorized
-    }
-    const action = async (): Promise<HttpResponse<AccountModel>> => {
-      return await remoteAuthenticationTest.auth(params)
     }
     await expect(action()).rejects.toThrow(new InvalidCredentialsError())
   })
 
   test('Should throw UnexpecetedError if  HttpPostClient returns status code diferent from 200 or 401', async () => {
-    params = mockAuthentication()
     httpPostClientSpy.response = {
-      statusCode: 500
-    }
-    const action = async (): Promise<HttpResponse<AccountModel>> => {
-      return await remoteAuthenticationTest.auth(params)
+      statusCode: 501
     }
     await expect(action()).rejects.toThrow(new UnexpectedError())
   })
