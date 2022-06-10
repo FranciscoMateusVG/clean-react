@@ -9,7 +9,7 @@ import {
 } from '@/data/protocols/http/http-post-client'
 import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
 
-describe('RemoteAuthentication', () => {
+describe('RemoteAuthentication injections', () => {
   // Creates remoteAuthentication with a spy
   const url = faker.internet.url()
   const httpPostClientSpy = new HttpPostClientSpy()
@@ -20,17 +20,29 @@ describe('RemoteAuthentication', () => {
   let params: AuthenticationParams
   let response: HttpResponse
 
-  test('Should inject correct URL in HttpPostClient', async () => {
+  beforeEach(async () => {
     params = mockAuthentication()
     response = await remoteAuthenticationTest.auth(params)
+  })
+
+  test('Should inject correct URL in HttpPostClient', () => {
     expect(httpPostClientSpy.url).toBe(url)
   })
 
-  test('Should inject correct BODY in HttpPostClient', async () => {
-    params = mockAuthentication()
-    response = await remoteAuthenticationTest.auth(params)
+  test('Should inject correct BODY in HttpPostClient', () => {
     expect(httpPostClientSpy.body).toEqual(params)
   })
+})
+
+describe('RemoteAuthentication errors', () => {
+  // Creates remoteAuthentication with a spy
+  const url = faker.internet.url()
+  const httpPostClientSpy = new HttpPostClientSpy()
+  const remoteAuthenticationTest = new RemoteAuthentication(
+    url,
+    httpPostClientSpy
+  )
+  let params: AuthenticationParams
 
   test('Should throw InvalidCredentialsError if  HttpPostClient returns 401', async () => {
     params = mockAuthentication()
