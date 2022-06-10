@@ -9,19 +9,23 @@ import {
 } from '@/data/protocols/http/http-post-client'
 import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
 import { UnexpectedError } from '../../../domain/erros/unexpected-error'
+import { AccountModel } from '@/domain/models/account-model'
 
 describe('RemoteAuthentication injections', () => {
   // Creates remoteAuthentication with a spy
   const url = faker.internet.url()
-  const httpPostClientSpy = new HttpPostClientSpy()
+  const httpPostClientSpy = new HttpPostClientSpy<
+    AuthenticationParams,
+    AccountModel
+  >()
   const remoteAuthenticationTest = new RemoteAuthentication(
     url,
     httpPostClientSpy
   )
   let params: AuthenticationParams
-  let response: HttpResponse
+  let response: HttpResponse<AccountModel>
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     params = mockAuthentication()
     response = await remoteAuthenticationTest.auth(params)
   })
@@ -38,7 +42,10 @@ describe('RemoteAuthentication injections', () => {
 describe('RemoteAuthentication errors', () => {
   // Creates remoteAuthentication with a spy
   const url = faker.internet.url()
-  const httpPostClientSpy = new HttpPostClientSpy()
+  const httpPostClientSpy = new HttpPostClientSpy<
+    AuthenticationParams,
+    AccountModel
+  >()
   const remoteAuthenticationTest = new RemoteAuthentication(
     url,
     httpPostClientSpy
@@ -50,7 +57,7 @@ describe('RemoteAuthentication errors', () => {
     httpPostClientSpy.response = {
       statusCode: HttpStatusCode.unauthorized
     }
-    const action = async (): Promise<HttpResponse> => {
+    const action = async (): Promise<HttpResponse<AccountModel>> => {
       return await remoteAuthenticationTest.auth(params)
     }
     await expect(action()).rejects.toThrow(new InvalidCredentialsError())
@@ -61,7 +68,7 @@ describe('RemoteAuthentication errors', () => {
     httpPostClientSpy.response = {
       statusCode: 500
     }
-    const action = async (): Promise<HttpResponse> => {
+    const action = async (): Promise<HttpResponse<AccountModel>> => {
       return await remoteAuthenticationTest.auth(params)
     }
     await expect(action()).rejects.toThrow(new UnexpectedError())

@@ -1,6 +1,6 @@
-export type HttpPostParams = {
+export type HttpPostParams<T> = {
   url: string
-  body?: object
+  body?: T
 }
 
 export enum HttpStatusCode {
@@ -9,11 +9,11 @@ export enum HttpStatusCode {
   unauthorized = 401
 }
 
-export type HttpResponse = {
+export type HttpResponse<R> = {
   statusCode: HttpStatusCode
-  body?: any
+  body?: R
 }
 
-export interface HttpPostClient {
-  post(params: HttpPostParams): Promise<HttpResponse>
+export interface HttpPostClient<T, R> {
+  post(params: HttpPostParams<T>): Promise<HttpResponse<R>>
 }
