@@ -8,6 +8,7 @@ import {
   HttpStatusCode
 } from '@/data/protocols/http/http-post-client'
 import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
+import { UnexpectedError } from '../../../domain/erros/unexpected-error'
 
 describe('RemoteAuthentication injections', () => {
   // Creates remoteAuthentication with a spy
@@ -53,5 +54,16 @@ describe('RemoteAuthentication errors', () => {
       return await remoteAuthenticationTest.auth(params)
     }
     await expect(action()).rejects.toThrow(new InvalidCredentialsError())
+  })
+
+  test('Should throw UnexpecetedError if  HttpPostClient returns status code diferent from 200 or 401', async () => {
+    params = mockAuthentication()
+    httpPostClientSpy.response = {
+      statusCode: 500
+    }
+    const action = async (): Promise<HttpResponse> => {
+      return await remoteAuthenticationTest.auth(params)
+    }
+    await expect(action()).rejects.toThrow(new UnexpectedError())
   })
 })
