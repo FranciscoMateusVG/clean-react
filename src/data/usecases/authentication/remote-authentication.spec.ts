@@ -3,14 +3,10 @@ import {
   mockAuthentication
 } from '@/domain/mocks/mock-account'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
-import {
-  HttpResponse,
-  HttpStatusCode
-} from '@/data/protocols/http/http-post-client'
-import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
-import { UnexpectedError } from '../../../domain/erros/unexpected-error'
+import { HttpStatusCode } from '@/data/protocols/http'
+import { UnexpectedError, InvalidCredentialsError } from '@/domain/erros'
 import { AccountModel } from '@/domain/models/account-model'
-import { mockRemoteAuthentication } from '@/data/mocks/remote-authentication'
+import { mockRemoteAuthentication } from '@/data/mocks'
 
 const { url, httpPostClientSpy, remoteAuthenticationTest } =
   mockRemoteAuthentication()

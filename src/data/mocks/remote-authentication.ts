@@ -2,7 +2,7 @@ import { AccountModel } from '@/domain/models/account-model'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
 import { faker } from '@faker-js/faker'
 import { RemoteAuthentication } from '../usecases/authentication/remote-authentication'
-import { HttpPostClientSpy } from './mock-http-client'
+import { HttpPostClientSpy } from '.'
 
 type MockRemoteAuthParams = {
   url: string
