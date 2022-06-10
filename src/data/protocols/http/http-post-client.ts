@@ -4,6 +4,7 @@ export type HttpPostParams = {
 }
 
 export enum HttpStatusCode {
+  noContent = 204,
   unauthorized = 401
 }
 
