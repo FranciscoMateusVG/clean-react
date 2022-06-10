@@ -3,7 +3,11 @@ import { mockAuthentication } from '@/domain/mocks/mock-authentication'
 import { HttpPostClientSpy } from '@/data/mocks/mock-http-client'
 import { RemoteAuthentication } from './remote-authentication'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
-import { HttpResponse } from '@/data/protocols/http/http-post-client'
+import {
+  HttpResponse,
+  HttpStatusCode
+} from '@/data/protocols/http/http-post-client'
+import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
 
 describe('RemoteAuthentication', () => {
   // Creates remoteAuthentication with a spy
@@ -16,21 +20,26 @@ describe('RemoteAuthentication', () => {
   let params: AuthenticationParams
   let response: HttpResponse
 
-  // Async needed to wait for response of remoteAuthenticationTest
-  beforeAll(async () => {
+  test('Should inject correct URL in HttpPostClient', async () => {
     params = mockAuthentication()
     response = await remoteAuthenticationTest.auth(params)
-  })
-
-  test('Should inject correct URL in HttpPostClient', () => {
     expect(httpPostClientSpy.url).toBe(url)
   })
 
-  test('Should inject correct BODY in HttpPostClient', () => {
+  test('Should inject correct BODY in HttpPostClient', async () => {
+    params = mockAuthentication()
+    response = await remoteAuthenticationTest.auth(params)
     expect(httpPostClientSpy.body).toEqual(params)
   })
 
-  // test('Should throw InvalidCredentialsError if  HttpPostClient returns 401', () => {
-  //   expect(response).rejects.toThrow(new InvalidCredentialsError())
-  // })
+  test('Should throw InvalidCredentialsError if  HttpPostClient returns 401', async () => {
+    params = mockAuthentication()
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.unauthorized
+    }
+    const action = async (): Promise<HttpResponse> => {
+      return await remoteAuthenticationTest.auth(params)
+    }
+    await expect(action()).rejects.toThrow(new InvalidCredentialsError())
+  })
 })
