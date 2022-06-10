@@ -1,4 +1,7 @@
-import { mockAuthentication } from '@/domain/mocks/mock-authentication'
+import {
+  mockAccountModel,
+  mockAuthentication
+} from '@/domain/mocks/mock-account'
 import { AuthenticationParams } from '@/domain/usecases/authentication'
 import {
   HttpResponse,
@@ -13,10 +16,14 @@ const { url, httpPostClientSpy, remoteAuthenticationTest } =
   mockRemoteAuthentication()
 
 describe('RemoteAuthentication injections', () => {
-  let response: HttpResponse<AccountModel>
+  let response: AccountModel
   let params: AuthenticationParams
   beforeAll(async () => {
     params = mockAuthentication()
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: mockAccountModel()
+    }
     response = await remoteAuthenticationTest.auth(params)
   })
 
@@ -30,11 +37,11 @@ describe('RemoteAuthentication injections', () => {
 })
 
 describe('RemoteAuthentication errors', () => {
-  let action: () => Promise<HttpResponse<AccountModel>>
+  let action: () => Promise<AccountModel>
   let params: AuthenticationParams
   beforeEach(() => {
     params = mockAuthentication()
-    action = async (): Promise<HttpResponse<AccountModel>> => {
+    action = async (): Promise<AccountModel> => {
       return await remoteAuthenticationTest.auth(params)
     }
   })
@@ -51,5 +58,25 @@ describe('RemoteAuthentication errors', () => {
       statusCode: 501
     }
     await expect(action()).rejects.toThrow(new UnexpectedError())
+  })
+})
+
+describe('RemoteAuthentication success', () => {
+  let action: () => Promise<AccountModel>
+  let params: AuthenticationParams
+  beforeEach(() => {
+    params = mockAuthentication()
+    action = async (): Promise<AccountModel> => {
+      return await remoteAuthenticationTest.auth(params)
+    }
+  })
+
+  test('Should return an AccountModel if successful', async () => {
+    const httpResult = mockAccountModel()
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult
+    }
+    await expect(action()).resolves.toEqual(httpResult)
   })
 })
