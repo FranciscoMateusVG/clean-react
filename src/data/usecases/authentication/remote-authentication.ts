@@ -5,6 +5,7 @@ import {
   HttpStatusCode
 } from '@/data/protocols/http/http-post-client'
 import { InvalidCredentialsError } from '@/domain/erros/invalid-credentials-error'
+import { UnexpectedError } from '@/domain/erros/unexpected-error'
 
 export class RemoteAuthentication {
   constructor(
@@ -18,9 +19,11 @@ export class RemoteAuthentication {
       body: params
     })
 
+    if (httpResponse.statusCode === HttpStatusCode.ok) return httpResponse
+
     if (httpResponse.statusCode === HttpStatusCode.unauthorized)
       throw new InvalidCredentialsError()
 
-    return httpResponse
+    throw new UnexpectedError()
   }
 }
