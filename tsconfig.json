@@ -13,7 +13,6 @@
     "isolatedModules": false,
     "jsx": "react-jsx",
     "moduleResolution": "node",
-    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "strict": true
