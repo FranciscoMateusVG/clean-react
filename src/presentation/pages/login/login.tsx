@@ -1,7 +1,5 @@
-import FormStatus from '@/presentation/components/FormStatus/FormStatus'
-import Input from '@/presentation/components/Input/Input'
-import Logo from '@/presentation/components/Logo/Logo'
-import Spinner from '@/presentation/components/Spinner'
+import FormStatus from '@/presentation/components/FormStatus'
+import Input from '@/presentation/components/Input'
 import React from 'react'
 import Styles from './Login.scss'
 
