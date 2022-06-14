@@ -1,3 +1,4 @@
+import FormStatus from '@/presentation/components/FormStatus/FormStatus'
 import Input from '@/presentation/components/Input/Input'
 import Logo from '@/presentation/components/Logo/Logo'
 import Spinner from '@/presentation/components/Spinner'
@@ -14,10 +15,7 @@ const Login: React.FC = () => {
         Entrar
       </button>
       <span className={Styles.link}>Criar conta</span>
-      <div className={Styles.errorWrapper}>
-        <Spinner />
-        <span className={Styles.error}>Erro</span>
-      </div>
+      <FormStatus />
     </form>
   )
 }
