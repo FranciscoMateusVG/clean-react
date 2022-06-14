@@ -1,3 +1,4 @@
+import Input from '@/presentation/components/Input/Input'
 import Logo from '@/presentation/components/Logo/Logo'
 import Spinner from '@/presentation/components/Spinner'
 import React from 'react'
@@ -7,14 +8,8 @@ const Login: React.FC = () => {
   return (
     <form className={Styles.form}>
       <h2>Login</h2>
-      <div className={Styles.inputWrap}>
-        <input type='email' name='email' placeholder='Digite sem e-mail' />
-        <span className={Styles.status}>❤️‍🩹</span>
-      </div>
-      <div className={Styles.inputWrap}>
-        <input type='password' name='password' placeholder='Digite sua senha' />
-        <span className={Styles.status}>❤️‍🩹</span>
-      </div>
+      <Input type='email' name='email' placeholder='Digite sem e-mail' />
+      <Input type='password' name='password' placeholder='Digite sua senha' />
       <button type='submit' name='login' className={Styles.submit}>
         Entrar
       </button>
