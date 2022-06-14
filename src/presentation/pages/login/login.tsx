@@ -1,5 +1,4 @@
-import FormStatus from '@/presentation/components/FormStatus'
-import Input from '@/presentation/components/Input'
+import { FormStatus, Input } from '@/presentation/components'
 import React from 'react'
 import Styles from './Login.scss'
 
