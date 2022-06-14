@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Spinner from '../../../components/Spinner'
 import Styles from './FormStatus.scss'
-import { Context } from '../Login.context'
+import { Context } from '../context'
 
 const FormStatus: React.FC<any> = () => {
   const { isLoading, messageError } = useContext(Context)

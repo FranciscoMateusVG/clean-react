@@ -14,4 +14,15 @@ describe('Login page initial state', () => {
     const submit = getByTestId('submit') as HTMLButtonElement
     expect(submit.disabled).toBe(true)
   })
+
+  test('EmailStatus title should be required', () => {
+    const { getByTestId } = render(<Login />)
+    const emailInput = getByTestId('emailInput')
+    expect(emailInput.title).toBe('Campo obrigatório!')
+  })
+  test('PasswordStatus title should be required', () => {
+    const { getByTestId } = render(<Login />)
+    const passInput = getByTestId('passInput')
+    expect(passInput.title).toBe('Campo obrigatório!')
+  })
 })

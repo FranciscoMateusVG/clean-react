@@ -3,11 +3,15 @@ import React, { createContext } from 'react'
 type StateProps = {
   isLoading: boolean
   messageError: string
+  emailError: string
+  passwordError: string
 }
 
 const state = {
   isLoading: false,
-  messageError: ''
+  messageError: '',
+  emailError: 'Campo obrigatório!',
+  passwordError: 'Campo obrigatório!'
 }
 
 export const Context = createContext<StateProps>(state)

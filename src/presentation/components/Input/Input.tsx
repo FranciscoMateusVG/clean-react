@@ -1,4 +1,6 @@
-import React from 'react'
+/* eslint-disable react/prop-types */
+import { Context } from '@/presentation/pages/Login/context'
+import React, { useContext } from 'react'
 import Styles from './Input.scss'
 
 type Props = React.DetailedHTMLProps<
@@ -10,7 +12,9 @@ const Input: React.FC<Props> = (props: Props) => {
   return (
     <div className={Styles.inputWrap}>
       <input {...props} />
-      <span className={Styles.status}>❤️‍🩹</span>
+      <span title={props.title} className={Styles.status}>
+        ❤️‍🩹
+      </span>
     </div>
   )
 }
