@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login from '@/presentation/pages/Login'
 import { Layout } from '@/presentation/components'
 import { ContextProvider } from '@/presentation/pages/Login/context'
-import { ValidationSpy } from '@/presentation/pages/Login/Login.spec'
+import { ValidationSpy } from '@/presentation/test/mocks/mock-validation'
 
 const Router: React.FC<any> = () => {
   const validationSpy = new ValidationSpy()

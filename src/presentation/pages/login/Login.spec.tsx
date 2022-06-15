@@ -1,45 +1,5 @@
-import React from 'react'
-import {
-  render,
-  cleanup,
-  fireEvent,
-  Matcher,
-  MatcherOptions
-} from '@testing-library/react'
-import Login from './Login'
-import { Validation } from '@/presentation/protocols/validation'
-import { ContextProvider } from './context'
-
-export class ValidationSpy implements Validation {
-  errorMessage: string
-  fieldValue: string
-  fieldName: string
-  validate(fieldName: string, fieldValue: string): string {
-    this.fieldValue = fieldValue
-    this.fieldName = fieldName
-    return this.errorMessage
-  }
-}
-
-type RTLType = (
-  id: Matcher,
-  options?: MatcherOptions | undefined
-) => HTMLElement
-
-type RenderLogin = {
-  getByTestId: RTLType
-  validationSpy: ValidationSpy
-}
-
-const renderLogin = (): RenderLogin => {
-  const validationSpy = new ValidationSpy()
-  const getByTestId = render(
-    <ContextProvider>
-      <Login validation={validationSpy} />
-    </ContextProvider>
-  ).getByTestId
-  return { getByTestId, validationSpy }
-}
+import { renderLogin } from '@/presentation/test/renders/render-login'
+import { cleanup, fireEvent } from '@testing-library/react'
 
 describe('Login page initial state', () => {
   test('Error message and Loading should not appear', () => {
