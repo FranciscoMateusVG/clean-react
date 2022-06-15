@@ -1,5 +1,6 @@
 import { renderLogin } from '@/presentation/test/renders/render-login'
 import { cleanup, fireEvent } from '@testing-library/react'
+import { faker } from '@faker-js/faker'
 
 describe('Login page initial state', () => {
   test('Error message and Loading should not appear', () => {
@@ -32,19 +33,20 @@ describe('Login validation input', () => {
   test('Should call validation email with correct value', () => {
     const { getByTestId, validationSpy } = renderLogin()
     const emailInput = getByTestId('emailInput')
+    const email = faker.internet.email()
 
-    fireEvent.input(emailInput, { target: { value: 'any_email' } })
+    fireEvent.input(emailInput, { target: { value: email } })
 
     expect(validationSpy.fieldName).toBe('email')
-    expect(validationSpy.fieldValue).toBe('any_email')
+    expect(validationSpy.fieldValue).toBe(email)
   })
   test('Should call validation password with correct value', () => {
     const { getByTestId, validationSpy } = renderLogin()
     const passInput = getByTestId('passInput')
-
-    fireEvent.input(passInput, { target: { value: 'any_password' } })
+    const password = faker.internet.password()
+    fireEvent.input(passInput, { target: { value: password } })
 
     expect(validationSpy.fieldName).toBe('password')
-    expect(validationSpy.fieldValue).toBe('any_password')
+    expect(validationSpy.fieldValue).toBe(password)
   })
 })
