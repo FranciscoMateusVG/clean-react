@@ -4,7 +4,8 @@ import Styles from './FormStatus.scss'
 import { Context } from '../context'
 
 const FormStatus: React.FC<any> = () => {
-  const { isLoading, messageError } = useContext(Context)
+  const { state } = useContext(Context)
+  const { isLoading, messageError } = state
   return (
     <div data-testid='errorWrap' className={Styles.errorWrapper}>
       {isLoading && <Spinner />}

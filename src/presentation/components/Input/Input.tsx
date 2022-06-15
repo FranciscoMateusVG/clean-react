@@ -9,9 +9,19 @@ type Props = React.DetailedHTMLProps<
 >
 
 const Input: React.FC<Props> = (props: Props) => {
+  const { state, setState } = useContext(Context)
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const inputTarget = event.target.name
+    const inputValue = event.target.value
+
+    setState({
+      ...state,
+      [inputTarget]: inputValue
+    })
+  }
   return (
     <div className={Styles.inputWrap}>
-      <input {...props} />
+      <input {...props} onChange={handleChange} />
       <span title={props.title} className={Styles.status}>
         ❤️‍🩹
       </span>

@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["*"]
     },
+    "strictPropertyInitialization": false,
     "esModuleInterop": true,
     "isolatedModules": false,
     "jsx": "react-jsx",
