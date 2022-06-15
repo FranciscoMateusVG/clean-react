@@ -10,11 +10,13 @@ import Login from './Login'
 import { Validation } from '@/presentation/protocols/validation'
 import { ContextProvider } from './context'
 
-class ValidationSpy implements Validation {
+export class ValidationSpy implements Validation {
   errorMessage: string
-  input: object
-  validate(input: object): string {
-    this.input = input
+  fieldValue: string
+  fieldName: string
+  validate(fieldName: string, fieldValue: string): string {
+    this.fieldValue = fieldValue
+    this.fieldName = fieldName
     return this.errorMessage
   }
 }
@@ -73,7 +75,8 @@ describe('Login validation input', () => {
 
     fireEvent.input(emailInput, { target: { value: 'any_email' } })
 
-    expect(validationSpy.input).toEqual({ email: 'any_email' })
+    expect(validationSpy.fieldName).toBe('email')
+    expect(validationSpy.fieldValue).toBe('any_email')
   })
   test('Should call validation password with correct value', () => {
     const { getByTestId, validationSpy } = renderLogin()
@@ -81,6 +84,7 @@ describe('Login validation input', () => {
 
     fireEvent.input(passInput, { target: { value: 'any_password' } })
 
-    expect(validationSpy.input).toEqual({ password: 'any_password' })
+    expect(validationSpy.fieldName).toBe('password')
+    expect(validationSpy.fieldValue).toBe('any_password')
   })
 })
